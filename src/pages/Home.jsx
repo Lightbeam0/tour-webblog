@@ -49,6 +49,15 @@ export default function Home({ onSelectDay }) {
           to   { opacity: 1; transform: translateY(0); }
         }
 
+        /* Card tilt on hover — alternates direction per column */
+        .card-wrap {
+          transition: transform 0.22s cubic-bezier(.34,1.56,.64,1);
+          transform-origin: center bottom;
+        }
+        .card-wrap:nth-child(3n+1):hover { transform: rotate(-1.2deg) scale(1.02); }
+        .card-wrap:nth-child(3n+2):hover { transform: rotate(0.8deg)  scale(1.02); }
+        .card-wrap:nth-child(3n):hover   { transform: rotate(-0.6deg) scale(1.02); }
+
         .hero-content > * {
           opacity: 0;
           animation: heroFadeIn 0.7s ease forwards;
@@ -98,7 +107,7 @@ export default function Home({ onSelectDay }) {
       {/* Hero */}
       <div
         className="w-full text-center relative overflow-hidden"
-        style={{ background: "#1A1714", padding: "5rem 2rem 4rem" }}
+        style={{ background: "linear-gradient(145deg, #0F1B2D 0%, #1A1714 45%, #2E1206 100%)", padding: "5rem 2rem 4rem" }}
       >
         {/* Subtle grid overlay */}
         <div
@@ -149,10 +158,10 @@ export default function Home({ onSelectDay }) {
           </p>
 
           <h1
-            className="font-normal leading-tight mb-4"
+            className="font-semibold leading-tight mb-4"
             style={{
               fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: "clamp(2.5rem, 6vw, 4.5rem)",
+              fontSize: "clamp(2.8rem, 7vw, 5rem)",
               color: "#FAF7F2",
             }}
           >
@@ -208,6 +217,7 @@ export default function Home({ onSelectDay }) {
           {days.map((d, i) => (
             <div
               key={d.day}
+              className="card-wrap"
               style={{
                 opacity: 0,
                 animation: "cardIn 0.55s ease forwards",

@@ -342,21 +342,30 @@ export default function DayPage({ day, onBack, onSelectDay }) {
               </div>
             </div>
 
-            {/* Featured image */}
+            {/* Featured image — Polaroid style */}
             {images[0] && (
               <figure
-                className="featured-img-wrap fade-up"
-                style={{ margin: "0 0 2rem", cursor: "pointer" }}
+                className="fade-up"
+                style={{
+                  background: "#fff",
+                  padding: "10px 10px 30px",
+                  boxShadow: "0 8px 28px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10)",
+                  transform: "rotate(-1.1deg)",
+                  margin: "0 4% 2.5rem",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                }}
                 onClick={() => setLightbox(0)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "rotate(0deg) scale(1.015)";
+                  e.currentTarget.style.boxShadow = "0 16px 42px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "rotate(-1.1deg)";
+                  e.currentTarget.style.boxShadow = "0 8px 28px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.10)";
+                }}
               >
-                <div
-                  style={{
-                    background: theme.accentLight,
-                    minHeight: "200px",
-                    borderBottom: `3px solid ${theme.accent}`,
-                    overflow: "hidden",
-                  }}
-                >
+                <div style={{ overflow: "hidden", background: theme.accentLight, minHeight: "120px" }}>
                   <img
                     src={images[0].src}
                     alt={images[0].caption}
@@ -368,9 +377,12 @@ export default function DayPage({ day, onBack, onSelectDay }) {
                     }}
                   />
                 </div>
-                <figcaption className="text-xs italic mt-1.5" style={{ color: theme.inkLight, fontFamily: "'Lora', Georgia, serif" }}>
+                <p
+                  className="text-xs italic text-center mt-2"
+                  style={{ color: "#999", fontFamily: "'Lora', Georgia, serif" }}
+                >
                   {images[0].caption}
-                </figcaption>
+                </p>
               </figure>
             )}
 
@@ -411,44 +423,75 @@ export default function DayPage({ day, onBack, onSelectDay }) {
 
                 {s.type === "heading" && (
                   <>
-                    <div className="section-rule">
-                      <span>◆ {s.text}</span>
+                    {/* Arrow-badge section label */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "2.5rem 0 0.75rem" }}>
+                      <div
+                        style={{
+                          background: theme.accent,
+                          color: "#fff",
+                          padding: "4px 16px 4px 12px",
+                          fontFamily: "'Lora', Georgia, serif",
+                          fontSize: "10px",
+                          fontWeight: 700,
+                          letterSpacing: ".12em",
+                          textTransform: "uppercase",
+                          whiteSpace: "nowrap",
+                          clipPath: "polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%)",
+                          flexShrink: 0,
+                        }}
+                      >
+                        {s.text}
+                      </div>
+                      <div style={{ flex: 1, height: "1px", background: theme.rule }} />
                     </div>
 
-                    {inlineImageMap[i] !== undefined && (
-                      <figure
-                        className="inline-img"
-                        style={{ margin: "1rem 0 1.75rem", display: "block" }}
-                        onClick={() => setLightbox(inlineImageMap[i])}
-                      >
-                        <div
-                          className="inline-img-inner"
+                    {/* Inline image — Polaroid style with alternating tilt */}
+                    {inlineImageMap[i] !== undefined && (() => {
+                      const imgIdx = inlineImageMap[i];
+                      const tilt = imgIdx % 2 === 0 ? "-0.8deg" : "0.9deg";
+                      return (
+                        <figure
                           style={{
-                            borderTop: `2px solid ${theme.rule}`,
-                            borderBottom: `2px solid ${theme.accent}`,
-                            background: theme.accentLight,
+                            background: "#fff",
+                            padding: "8px 8px 26px",
+                            boxShadow: "0 6px 22px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08)",
+                            transform: `rotate(${tilt})`,
+                            margin: "1rem 4% 2rem",
+                            cursor: "pointer",
+                            transition: "transform 0.3s ease, box-shadow 0.3s ease",
                           }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = "rotate(0deg) scale(1.015)";
+                            e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.18), 0 4px 10px rgba(0,0,0,0.10)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = `rotate(${tilt})`;
+                            e.currentTarget.style.boxShadow = "0 6px 22px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08)";
+                          }}
+                          onClick={() => setLightbox(imgIdx)}
                         >
-                          <img
-                            src={images[inlineImageMap[i]].src}
-                            alt={images[inlineImageMap[i]].caption}
-                            style={{ width: "100%", height: "auto", display: "block" }}
-                            onError={(e) => {
-                              e.target.style.display = "none";
-                              e.target.parentNode.style.cssText +=
-                                ";display:flex;align-items:center;justify-content:center;min-height:160px;";
-                              e.target.parentNode.innerHTML = `<span style="font-size:2rem;opacity:.3">📷</span>`;
-                            }}
-                          />
-                        </div>
-                        <figcaption
-                          className="text-xs italic mt-1.5"
-                          style={{ color: theme.inkLight, fontFamily: "'Lora', Georgia, serif" }}
-                        >
-                          {images[inlineImageMap[i]].caption}
-                        </figcaption>
-                      </figure>
-                    )}
+                          <div style={{ overflow: "hidden", background: theme.accentLight, minHeight: "80px" }}>
+                            <img
+                              src={images[imgIdx].src}
+                              alt={images[imgIdx].caption}
+                              style={{ width: "100%", height: "auto", display: "block" }}
+                              onError={(e) => {
+                                e.target.style.display = "none";
+                                e.target.parentNode.style.cssText +=
+                                  ";display:flex;align-items:center;justify-content:center;min-height:140px;";
+                                e.target.parentNode.innerHTML = `<span style="font-size:2rem;opacity:.3">📷</span>`;
+                              }}
+                            />
+                          </div>
+                          <p
+                            className="text-xs italic text-center"
+                            style={{ marginTop: "6px", color: "#999", fontFamily: "'Lora', Georgia, serif" }}
+                          >
+                            {images[imgIdx].caption}
+                          </p>
+                        </figure>
+                      );
+                    })()}
                   </>
                 )}
 
