@@ -7,8 +7,9 @@ export default function DayPage({ day, onBack, onSelectDay }) {
   const { title, date, route, theme, stops, images, sections } = data;
   const [lightbox, setLightbox] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [imgOffsets, setImgOffsets] = useState({});
 
-  // Map section index → image index using explicit imageIndex on heading sections
+  // Map section index → start image index (explicit per heading)
   const inlineImageMap = useMemo(() => {
     const map = {};
     sections.forEach((s, i) => {
@@ -18,6 +19,42 @@ export default function DayPage({ day, onBack, onSelectDay }) {
     });
     return map;
   }, [sections, images]);
+
+  // Compute per-section image range [start, end] by using neighbour start indices
+  const inlineImageRanges = useMemo(() => {
+    const entries = Object.entries(inlineImageMap)
+      .map(([k, v]) => ({ sIdx: Number(k), imgIdx: v }))
+      .sort((a, b) => a.imgIdx - b.imgIdx);
+    const result = {};
+    entries.forEach(({ sIdx, imgIdx }, i) => {
+      const nextStart = i + 1 < entries.length ? entries[i + 1].imgIdx : images.length;
+      result[sIdx] = { start: imgIdx, end: nextStart - 1 };
+    });
+    return result;
+  }, [inlineImageMap, images.length]);
+
+  // Reset offsets when navigating to a different day
+  useEffect(() => { setImgOffsets({}); }, [day]);
+
+  // Auto-cycle images every 3.5 s for sections with multiple photos
+  useEffect(() => {
+    const hasMultiple = Object.values(inlineImageRanges).some(({ start, end }) => end > start);
+    if (!hasMultiple) return;
+    const timer = setInterval(() => {
+      setImgOffsets((prev) => {
+        const next = { ...prev };
+        Object.entries(inlineImageRanges).forEach(([k, { start, end }]) => {
+          if (end > start) {
+            const sIdx = Number(k);
+            const count = end - start + 1;
+            next[sIdx] = ((prev[sIdx] || 0) + 1) % count;
+          }
+        });
+        return next;
+      });
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [inlineImageRanges]);
 
   useEffect(() => { window.scrollTo(0, 0); }, [day]);
 
@@ -141,6 +178,13 @@ export default function DayPage({ day, onBack, onSelectDay }) {
           height: .5px;
           background: ${theme.rule};
         }
+
+        /* Inline image fade on slide change */
+        @keyframes imgFadeIn {
+          from { opacity: 0; transform: scale(1.015); }
+          to   { opacity: 1; transform: scale(1); }
+        }
+        .img-fade { animation: imgFadeIn 0.4s ease forwards; }
 
         /* Scroll-reveal */
         .fade-up {
@@ -444,10 +488,19 @@ export default function DayPage({ day, onBack, onSelectDay }) {
                       <div style={{ flex: 1, height: "1px", background: theme.rule }} />
                     </div>
 
-                    {/* Inline image — Polaroid style with alternating tilt */}
+                    {/* Inline image slider — Polaroid style, cycles through section's photos */}
                     {inlineImageMap[i] !== undefined && (() => {
-                      const imgIdx = inlineImageMap[i];
-                      const tilt = imgIdx % 2 === 0 ? "-0.8deg" : "0.9deg";
+                      const { start, end } = inlineImageRanges[i] || { start: inlineImageMap[i], end: inlineImageMap[i] };
+                      const count = end - start + 1;
+                      const offset = imgOffsets[i] || 0;
+                      const currentIdx = start + offset;
+                      const tilt = i % 2 === 0 ? "-0.8deg" : "0.9deg";
+
+                      const goTo = (newOffset, e) => {
+                        e && e.stopPropagation();
+                        setImgOffsets((p) => ({ ...p, [i]: newOffset }));
+                      };
+
                       return (
                         <figure
                           style={{
@@ -456,7 +509,6 @@ export default function DayPage({ day, onBack, onSelectDay }) {
                             boxShadow: "0 6px 22px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08)",
                             transform: `rotate(${tilt})`,
                             margin: "1rem 4% 2rem",
-                            cursor: "pointer",
                             transition: "transform 0.3s ease, box-shadow 0.3s ease",
                           }}
                           onMouseEnter={(e) => {
@@ -467,12 +519,15 @@ export default function DayPage({ day, onBack, onSelectDay }) {
                             e.currentTarget.style.transform = `rotate(${tilt})`;
                             e.currentTarget.style.boxShadow = "0 6px 22px rgba(0,0,0,0.14), 0 2px 6px rgba(0,0,0,0.08)";
                           }}
-                          onClick={() => setLightbox(imgIdx)}
+                          onClick={() => setLightbox(currentIdx)}
                         >
-                          <div style={{ overflow: "hidden", background: theme.accentLight, minHeight: "80px" }}>
+                          {/* Image with fade animation on change */}
+                          <div style={{ overflow: "hidden", background: theme.accentLight, minHeight: "80px", position: "relative" }}>
                             <img
-                              src={images[imgIdx].src}
-                              alt={images[imgIdx].caption}
+                              key={currentIdx}
+                              className="img-fade"
+                              src={images[currentIdx].src}
+                              alt={images[currentIdx].caption}
                               style={{ width: "100%", height: "auto", display: "block" }}
                               onError={(e) => {
                                 e.target.style.display = "none";
@@ -481,12 +536,67 @@ export default function DayPage({ day, onBack, onSelectDay }) {
                                 e.target.parentNode.innerHTML = `<span style="font-size:2rem;opacity:.3">📷</span>`;
                               }}
                             />
+
+                            {/* Prev / Next arrows — only shown when multiple images */}
+                            {count > 1 && (
+                              <>
+                                <button
+                                  onClick={(e) => goTo((offset - 1 + count) % count, e)}
+                                  style={{
+                                    position: "absolute", left: "6px", top: "50%", transform: "translateY(-50%)",
+                                    background: "rgba(0,0,0,0.38)", color: "#fff", border: "none",
+                                    borderRadius: "50%", width: "28px", height: "28px", fontSize: "16px",
+                                    lineHeight: "28px", textAlign: "center", cursor: "pointer",
+                                    opacity: 0.85, padding: 0,
+                                  }}
+                                >‹</button>
+                                <button
+                                  onClick={(e) => goTo((offset + 1) % count, e)}
+                                  style={{
+                                    position: "absolute", right: "6px", top: "50%", transform: "translateY(-50%)",
+                                    background: "rgba(0,0,0,0.38)", color: "#fff", border: "none",
+                                    borderRadius: "50%", width: "28px", height: "28px", fontSize: "16px",
+                                    lineHeight: "28px", textAlign: "center", cursor: "pointer",
+                                    opacity: 0.85, padding: 0,
+                                  }}
+                                >›</button>
+                              </>
+                            )}
                           </div>
+
+                          {/* Dot indicators + caption */}
+                          {count > 1 && (
+                            <div
+                              style={{ display: "flex", justifyContent: "center", gap: "5px", marginTop: "8px" }}
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              {Array.from({ length: count }).map((_, di) => (
+                                <button
+                                  key={di}
+                                  onClick={(e) => goTo(di, e)}
+                                  style={{
+                                    width: di === offset ? "18px" : "6px",
+                                    height: "6px",
+                                    borderRadius: "99px",
+                                    background: di === offset ? theme.accent : "#ccc",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    padding: 0,
+                                    transition: "width 0.25s ease, background 0.25s ease",
+                                  }}
+                                />
+                              ))}
+                            </div>
+                          )}
+
                           <p
                             className="text-xs italic text-center"
                             style={{ marginTop: "6px", color: "#999", fontFamily: "'Lora', Georgia, serif" }}
                           >
-                            {images[imgIdx].caption}
+                            {images[currentIdx].caption}
+                            {count > 1 && (
+                              <span style={{ color: "#bbb", marginLeft: "4px" }}>· {offset + 1}/{count}</span>
+                            )}
                           </p>
                         </figure>
                       );
