@@ -8,13 +8,12 @@ export default function DayPage({ day, onBack, onSelectDay }) {
   const [lightbox, setLightbox] = useState(null);
   const [scrollProgress, setScrollProgress] = useState(0);
 
-  // Map heading section index → image index (starting at images[1], images[0] is featured)
+  // Map section index → image index using explicit imageIndex on heading sections
   const inlineImageMap = useMemo(() => {
     const map = {};
-    let idx = 1;
     sections.forEach((s, i) => {
-      if (s.type === "heading" && idx < images.length) {
-        map[i] = idx++;
+      if (s.type === "heading" && s.imageIndex !== undefined && s.imageIndex < images.length) {
+        map[i] = s.imageIndex;
       }
     });
     return map;

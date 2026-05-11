@@ -62,6 +62,7 @@ export const days = [
       {
         type: "heading",
         text: "Landing in Manila",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -78,6 +79,7 @@ export const days = [
       {
         type: "heading",
         text: "Rizal Park — Where History Stands Still",
+        imageIndex: 2,
       },
       {
         type: "paragraph",
@@ -94,6 +96,7 @@ export const days = [
       {
         type: "heading",
         text: "Plaza de Roma & Manila Cathedral",
+        imageIndex: 6,
       },
       {
         type: "paragraph",
@@ -102,6 +105,7 @@ export const days = [
       {
         type: "heading",
         text: "Intramuros — A City Within a City",
+        imageIndex: 8,
       },
       {
         type: "paragraph",
@@ -119,6 +123,7 @@ export const days = [
       {
         type: "heading",
         text: "Dungeons of Fort Santiago — The Weight of Memory",
+        imageIndex: 10,
       },
       {
         type: "paragraph",
@@ -131,6 +136,7 @@ export const days = [
       {
         type: "heading",
         text: "SM Mall of Asia — Back to the Present",
+        imageIndex: 12,
       },
       {
         type: "paragraph",
@@ -139,6 +145,7 @@ export const days = [
       {
         type: "heading",
         text: "Ramon Magsaysay — The Night Belongs to Us",
+        imageIndex: 14,
       },
       {
         type: "paragraph",
@@ -205,6 +212,7 @@ export const days = [
       {
         type: "heading",
         text: "Hytec Power Inc — Where Technology Gets Physical",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -225,6 +233,7 @@ export const days = [
       {
         type: "heading",
         text: "Opentext at RCBC Plaza — A Different Kind of Welcome",
+        imageIndex: 6,
       },
       {
         type: "paragraph",
@@ -254,6 +263,7 @@ export const days = [
       {
         type: "heading",
         text: "SM North EDSA — The Night Is Ours",
+        imageIndex: 13,
       },
       {
         type: "paragraph",
@@ -319,6 +329,7 @@ export const days = [
       {
         type: "heading",
         text: "Top Peg Animation & Creative Studio — Where Filipino Creativity Lives",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -348,6 +359,7 @@ export const days = [
       {
         type: "heading",
         text: "Teleperformance — The Scale of Global BPO",
+        imageIndex: 6,
       },
       {
         type: "paragraph",
@@ -377,6 +389,7 @@ export const days = [
       {
         type: "heading",
         text: "BGC — The City That Never Dims",
+        imageIndex: 12,
       },
       {
         type: "paragraph",
