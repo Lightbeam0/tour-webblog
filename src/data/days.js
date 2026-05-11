@@ -451,6 +451,7 @@ export const days = [
       {
         type: "heading",
         text: "MMDA Headquarters — The City's Nerve Center",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -480,6 +481,7 @@ export const days = [
       {
         type: "heading",
         text: "Microsourcing — Built to Inspire",
+        imageIndex: 7,
       },
       {
         type: "paragraph",
@@ -568,6 +570,7 @@ export const days = [
       {
         type: "heading",
         text: "People's Park in the Sky — Taal at Your Feet",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -597,6 +600,7 @@ export const days = [
       {
         type: "heading",
         text: "Sky Ranch — All the Rides, All of Them",
+        imageIndex: 8,
       },
       {
         type: "paragraph",
@@ -675,6 +679,7 @@ export const days = [
       {
         type: "heading",
         text: "La Trinidad Strawberry Farm — Arriving at Sunrise",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -691,6 +696,7 @@ export const days = [
       {
         type: "heading",
         text: "Bell Church — Stillness Before the City Wakes",
+        imageIndex: 4,
       },
       {
         type: "paragraph",
@@ -711,6 +717,7 @@ export const days = [
       {
         type: "heading",
         text: "Philippine Military Academy — The West Point of Asia",
+        imageIndex: 8,
       },
       {
         type: "paragraph",
@@ -736,6 +743,7 @@ export const days = [
       {
         type: "heading",
         text: "The Mansion House — Where Presidents Rest",
+        imageIndex: 13,
       },
       {
         type: "paragraph",
@@ -744,6 +752,7 @@ export const days = [
       {
         type: "heading",
         text: "Mines View Park — Baguio's Famous Lookout",
+        imageIndex: 14,
       },
       {
         type: "paragraph",
@@ -756,6 +765,7 @@ export const days = [
       {
         type: "heading",
         text: "SM Baguio & the Night Market — Ending the Longest Day",
+        imageIndex: 17,
       },
       {
         type: "paragraph",
@@ -820,6 +830,7 @@ export const days = [
       {
         type: "heading",
         text: "Burnham Park — A Baguio Goodbye",
+        imageIndex: 1,
       },
       {
         type: "paragraph",
@@ -840,6 +851,7 @@ export const days = [
       {
         type: "heading",
         text: "The Drive Back — South Through the Mountains",
+        imageIndex: 8,
       },
       {
         type: "paragraph",
@@ -931,6 +943,7 @@ export const days = [
       {
         type: "heading",
         text: "1 AM — NAIA, One More Time",
+        imageIndex: 2,
       },
       {
         type: "paragraph",
@@ -947,6 +960,7 @@ export const days = [
       {
         type: "heading",
         text: "Boarding — The Last Leg",
+        imageIndex: 3,
       },
       {
         type: "paragraph",
@@ -955,6 +969,7 @@ export const days = [
       {
         type: "heading",
         text: "Morning Sunshine, Zamboanga",
+        imageIndex: 4,
       },
       {
         type: "paragraph",
