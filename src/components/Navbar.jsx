@@ -1,4 +1,4 @@
-export default function Navbar({ onHome }) {
+export default function Navbar({ onHome, onAbout }) {
   return (
     <nav className="w-full border-b border-stone-200 bg-[#FAF7F2] sticky top-0 z-50">
       <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
@@ -17,10 +17,16 @@ export default function Navbar({ onHome }) {
           Beyond the Classroom
         </button>
 
-        {/* Right — Tour label */}
-        <div className="text-xs uppercase tracking-widest text-stone-400 hidden sm:block">
-          BSIT Tour · 2026
-        </div>
+        {/* Right — About link */}
+        <button
+          onClick={onAbout}
+          className="text-xs uppercase tracking-widest font-medium hidden sm:block transition-colors duration-200"
+          style={{ color: "#8B7B6A", background: "none", border: "none", cursor: "pointer" }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = "#8B5E3C")}
+          onMouseLeave={(e) => (e.currentTarget.style.color = "#8B7B6A")}
+        >
+          About
+        </button>
 
       </div>
     </nav>

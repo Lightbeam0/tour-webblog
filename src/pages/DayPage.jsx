@@ -2,7 +2,7 @@ import { useEffect, useState, useMemo } from "react";
 import Navbar from "../components/Navbar";
 import { days } from "../data/days";
 
-export default function DayPage({ day, onBack, onSelectDay }) {
+export default function DayPage({ day, onBack, onSelectDay, onAbout }) {
   const data = days.find((d) => d.day === day);
   const { title, date, route, theme, stops, images, sections } = data;
   const [lightbox, setLightbox] = useState(null);
@@ -278,7 +278,7 @@ export default function DayPage({ day, onBack, onSelectDay }) {
       {/* Top accent stripe */}
       <div style={{ height: "4px", background: `linear-gradient(90deg, ${theme.accent} 0%, ${theme.accentMid} 50%, ${theme.accent} 100%)` }} />
 
-      <Navbar onHome={onBack} />
+      <Navbar onHome={onBack} onAbout={onAbout} />
 
       {/* Back button */}
       <div className="max-w-4xl mx-auto px-6 pt-5" style={{ borderBottom: `1px solid ${theme.rule}`, paddingBottom: "1rem" }}>

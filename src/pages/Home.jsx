@@ -29,7 +29,7 @@ const TILES = [
   { x: "71%", y: "77%", w: 58,  h: 64,  a: 2, dur: 11, delay: 4.9  },
 ];
 
-export default function Home({ onSelectDay }) {
+export default function Home({ onSelectDay, onAbout }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -102,7 +102,7 @@ export default function Home({ onSelectDay }) {
         }
       `}</style>
 
-      <Navbar onHome={() => {}} />
+      <Navbar onHome={() => {}} onAbout={onAbout} />
 
       {/* Hero */}
       <div
@@ -244,6 +244,89 @@ export default function Home({ onSelectDay }) {
             <em>Nur-Ali P. Anupol</em>. Eight days. Multiple industry visits.
             One unforgettable week.
           </p>
+        </div>
+      </div>
+
+      {/* About Me */}
+      <div style={{ background: "#F2EDE4" }}>
+        <div className="max-w-5xl mx-auto px-6 py-12">
+
+          <div className="flex items-center gap-3 mb-8">
+            <div className="flex-1 h-px" style={{ background: "#D4C9B8" }} />
+            <span
+              className="text-sm italic"
+              style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#8B5E3C" }}
+            >
+              About the Author
+            </span>
+            <div className="flex-1 h-px" style={{ background: "#D4C9B8" }} />
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-8 items-start max-w-2xl mx-auto">
+
+            {/* Text */}
+            <div className="flex-1">
+              <h3
+                className="text-2xl font-semibold mb-1"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif", color: "#1A1410" }}
+              >
+                Nur-Ali P. Anupol
+              </h3>
+              <p
+                className="text-xs uppercase tracking-widest mb-4"
+                style={{ color: "#C4965A", fontFamily: "'Lora', Georgia, serif" }}
+              >
+                BSIT 4th Year · WMSU College of Computing Studies
+              </p>
+              <p
+                className="text-sm leading-relaxed mb-5"
+                style={{ color: "#3A2618", fontFamily: "'Lora', Georgia, serif" }}
+              >
+                I'm a fourth-year BSIT student at Western Mindanao State University in
+                Zamboanga City. I built this blog to document our educational tour — eight
+                days across Metro Manila, Tagaytay, and Baguio City in April 2026. It's a
+                personal record of the industry visits, the places, and the people that made
+                that week one worth keeping.
+              </p>
+
+              {/* Socials */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { name: "Facebook", url: "https://www.facebook.com/nur.ali.anupol.2024/", color: "#1877F2" },
+                  { name: "Instagram", url: "https://www.instagram.com/nur_alight/", color: "#E1306C" },
+                  { name: "GitHub", url: "https://github.com/Lightbeam0", color: "#24292E" },
+                  { name: "LinkedIn", url: "https://www.linkedin.com/in/nur-ali-anupol-860b013b0/", color: "#0A66C2" },
+                ].map((s) => (
+                  <a
+                    key={s.name}
+                    href={s.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold px-4 py-1.5 rounded-full"
+                    style={{
+                      background: `${s.color}12`,
+                      color: s.color,
+                      border: `1px solid ${s.color}30`,
+                      textDecoration: "none",
+                      fontFamily: "'Lora', Georgia, serif",
+                      letterSpacing: ".04em",
+                      transition: "background 0.15s, color 0.15s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = s.color;
+                      e.currentTarget.style.color = "#fff";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = `${s.color}12`;
+                      e.currentTarget.style.color = s.color;
+                    }}
+                  >
+                    {s.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
